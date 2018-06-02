@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources> 
+
+ 
+  <!-- these  colors need to be changed as per application status bar-->
+  <item name="primary" type="color">#2dd3e2</item>
+  <item name="primary_dark" type="color">#2dbee2</item>
+  <item name="primary_darker" type="color">#2dbee2</item>
+  <item name="accent" type="color">#FF4081</item>
+  <item name="control_activated" type="color">#FF4081</item>
+ 
+
+  <!--for gradient and transparent color // last 6 digits refers actual color code and first two digits refer HEX value of transparency-->
+  <color name="primary_transparent">#AA2dd3e2</color>
+
+ 
+  <color name="hint_text">#555555</color>
+  <color name="_title">#777777</color>
+
+  <color name="album_title">#4c4c4c</color>
+
+  
+</resources>
