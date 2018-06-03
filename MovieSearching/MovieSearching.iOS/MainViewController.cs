@@ -60,8 +60,11 @@ namespace MovieSearching.iOS
         async void Search()
         {
             UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
-            movieModel = await CoreService.GetMovieService(searchBar.Text);
-            SyncToMain(movieModel);
+           
+             movieModel = await CoreService.GetMovieService(searchBar.Text, "2");
+             SyncToMain(movieModel);
+         
+           
             searchBar.ResignFirstResponder();
         }
         void SyncToMain(MovieModel results)
@@ -71,13 +74,16 @@ namespace MovieSearching.iOS
                 if (results != null)
                 {
                     // first clear the data
-                    searchResults.Clear();
+                   // searchResults.Clear();
 
                     searchResults.Add(results);
                     TableView.ReloadData();
                 }
                 else
                 {
+                    // first clear the data
+                    searchResults.Clear();
+                    TableView.ReloadData();
                     new UIAlertView("", "Could not retrieve movies ! Try again", null, "OK").Show();
                 }
 
@@ -119,18 +125,30 @@ namespace MovieSearching.iOS
 
                         cellId
                     );
-                    cell.IndentationWidth = 0.5f;
-
+                   
                     cell.LayoutMargins = UIEdgeInsets.Zero; // remove table cell separator margin
-                    SetCardView(cell.ContentView);
-                }
-                var backgroundView = new UIImageView(LoadImage.FromUrl(controller.searchResults[indexPath.Row].Poster));
-                //backgroundView.ClipsToBounds = true;
-                backgroundView.ContentMode = UIViewContentMode.ScaleToFill;
 
+                }
+                if(!string.IsNullOrEmpty(controller.searchResults[indexPath.Row].Poster))
+                {
+                    var backgroundView = new UIImageView(LoadImage.FromUrl(controller.searchResults[indexPath.Row].Poster));
+                    //backgroundView.ClipsToBounds = true;
+                    backgroundView.ContentMode = UIViewContentMode.ScaleToFill;
+                    cell.BackgroundView = backgroundView;
+                }
+        
                 cell.TextLabel.Text = controller.searchResults[indexPath.Row].Title +"  "+ controller.searchResults[indexPath.Row].Year;
                 //cell.DetailTextLabel.Text = controller.searchResults[indexPath.Row].Year;
-                cell.BackgroundView = backgroundView;
+              
+               
+                cell.Layer.CornerRadius = 5.0f;
+                cell.Layer.BorderColor = UIColor.Clear.CGColor;
+                cell.Layer.BorderWidth = 5.0f;
+                cell.Layer.ShadowOpacity = 0.5f;
+                cell.Layer.ShadowColor = UIColor.LightGray.CGColor;
+                cell.Layer.ShadowRadius = 5.0f;
+                //view.Layer.ShadowOffset=Estimate
+                cell.Layer.MasksToBounds = true;
 
                 return cell;
             }

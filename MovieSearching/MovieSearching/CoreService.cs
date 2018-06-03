@@ -9,20 +9,16 @@ namespace MovieSearching
 {
     public class CoreService
     {
-        public static async Task<MovieModel> GetMovieService(string title)
+        public static async Task<MovieModel> GetMovieService(string title,string page=null)
         {
             //get api key from http://www.omdbapi.com/
             string key = "c102110";
             string queryString = "http://www.omdbapi.com/?t="
-                + title+ "&apikey=" + key;
+                + title + "&apikey=" + key + "&page="+page;
            
-            //if (key == "c102110")
-            //{
-            //    throw new ArgumentException("You must obtain an API key fromhttp://www.omdbapi.com/ and replace it in the 'key' variable.");
-            //}
 
             dynamic results = await MovieData.GetMovieDataFromRemote(queryString).ConfigureAwait(false);
-
+           
             if (results["Title"] != null)
             {
                 MovieModel movie = new MovieModel();
