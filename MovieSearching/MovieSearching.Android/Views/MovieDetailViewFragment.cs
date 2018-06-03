@@ -45,9 +45,7 @@ namespace MovieSearching.Droid.Views
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             
-            // Create your fragment here
             var result = Arguments.Get(ARG_PARAM1).ToString();
             movieItem = JsonConvert.DeserializeObject<MovieModel>(result);
         }
@@ -65,9 +63,7 @@ namespace MovieSearching.Droid.Views
             View navigationIcon = mToolbar.GetChildAt(1); //NavigationIcon
 
             navigationIcon.Click += delegate
-            {
-                //Toast.MakeText(this.Activity, "Action selected: ",
-                //    ToastLength.Short).Show();
+            {               
                 this.Activity.OnBackPressed();
                 activityToolbar.Visibility = ViewStates.Visible;
             };
@@ -79,8 +75,7 @@ namespace MovieSearching.Droid.Views
             collapsingToolbar.SetTitle(movieItem.Title);
 
             var imageView = rootView.FindViewById<ImageView>(Resource.Id.image);
-           // var url = "https://images-na.ssl-images-amazon.com/images/M/MV5BZGNkZjM0NWMtZTkwNC00YThlLWE1ODctN2Y0Yjk1NDJiOWQ0XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg";
-
+           
             Picasso.With(this.Context)
                        .Load(movieItem.Poster)
                        .Fit()

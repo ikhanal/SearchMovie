@@ -23,6 +23,7 @@ namespace MovieSearching.Droid.Views
         EditText searchText;
         RecyclerView recyclerView;
         SwipeRefreshLayout swipeRefreshLayout;
+        ProgressBar progressBar;
 
         MovieRecyclerViewAdapter movieAdapter;
         List<MovieModel> dataList;
@@ -39,7 +40,10 @@ namespace MovieSearching.Droid.Views
             // Create your fragment here
             dataList = new List<MovieModel>();
             movieAdapter = new MovieRecyclerViewAdapter(this.Context,dataList);
-            
+            // inflate view
+            rootView = LayoutInflater.FromContext(this.Context).Inflate(Resource.Layout.fragment_movie_list, null);
+            progressBar = rootView.FindViewById<ProgressBar>(Resource.Id.progress_bar);
+            progressBar.Visibility = ViewStates.Visible;
             var defaultTitle = "Russian";
             // check network
             wifiNetwork = Reachability.IsConnectedWifi(this.Context);
@@ -50,8 +54,7 @@ namespace MovieSearching.Droid.Views
             }
             else
             {
-                Toast.MakeText(this.Activity, "Please check your network ",
-                    ToastLength.Short).Show();
+                CustomAlertDialog.ShowAlertDialog(this.Context, "Please check your network !");
             }
 
 
@@ -61,12 +64,11 @@ namespace MovieSearching.Droid.Views
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
-            rootView=inflater.Inflate(Resource.Layout.fragment_movie_list, container, false);
+            //rootView=inflater.Inflate(Resource.Layout.fragment_movie_list, container, false);
             searchButton = rootView.FindViewById<Button>(Resource.Id.search_button);
             searchText = rootView.FindViewById<EditText>(Resource.Id.search_text);
             recyclerView = rootView.FindViewById<RecyclerView>(Resource.Id.recycler_view);
             swipeRefreshLayout = rootView.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_refresh);
-
             SetRecyclerView(recyclerView);
 
             searchText.FocusChange += SearchText_FocusChange;
@@ -91,8 +93,10 @@ namespace MovieSearching.Droid.Views
 
         private async void SearchButton_Click(object sender, EventArgs e)
         {
+            
             if (!string.IsNullOrEmpty(searchText.Text))
             {
+                progressBar.Visibility = ViewStates.Visible;
                 movieModel = await CoreService.GetMovieService(searchText.Text);
                 if (movieModel != null)
                 {
@@ -107,14 +111,16 @@ namespace MovieSearching.Droid.Views
                     movieAdapter.NotifyDataSetChanged();
                     CustomAlertDialog.ShowAlertDialog(this.Context, "No movies found please try again !");
                 }
-            }else
+                Activity.RunOnUiThread(() => {
+                    progressBar.Visibility = ViewStates.Gone;
+                });
+            }
+            else
             {
                 searchText.SetError("Please enter searching title", null);
             }
         }
-
-       
-
+        
         protected void SetRecyclerView(RecyclerView recyclerView)
         {
             recyclerView.HasFixedSize = true;
@@ -125,8 +131,9 @@ namespace MovieSearching.Droid.Views
 
         protected async void LoadMovieData(string searchTitle)
         {
+
            
-                movieModel = await CoreService.GetMovieService(searchTitle);
+            movieModel = await CoreService.GetMovieService(searchTitle);
                 if (movieModel != null)
                 {
                     dataList.Add(movieModel);
@@ -138,8 +145,11 @@ namespace MovieSearching.Droid.Views
                 Toast.MakeText(this.Activity, "No Movies Found",
                ToastLength.Short).Show();
             }
-                   
-           
+            Activity.RunOnUiThread(() => {
+                progressBar.Visibility = ViewStates.Gone;
+            });
+
+
         }
     }
 }
