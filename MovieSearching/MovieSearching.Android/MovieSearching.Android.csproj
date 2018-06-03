@@ -135,7 +135,9 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\AppConstant.cs" />
+    <Compile Include="Utils\CustomAlertDialog.cs" />
     <Compile Include="Utils\CustomFragmentManager.cs" />
+    <Compile Include="Utils\Reachability.cs" />
     <Compile Include="Views\MovieDetailViewFragment.cs" />
     <Compile Include="Views\MovieListviewFragment.cs" />
     <Compile Include="Views\MovieRecyclerViewAdapter.cs" />

@@ -15,6 +15,7 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.Design.Widget;
 using Newtonsoft.Json;
 using Com.Squareup.Picasso;
+using Android.Support.V7.App;
 
 namespace MovieSearching.Droid.Views
 {
@@ -60,6 +61,16 @@ namespace MovieSearching.Droid.Views
               activityToolbar.Visibility = ViewStates.Gone;
 
              mToolbar = rootView.FindViewById<Toolbar>(Resource.Id.toolbar);
+            SetupToolbar(mToolbar);
+            View navigationIcon = mToolbar.GetChildAt(1); //NavigationIcon
+
+            navigationIcon.Click += delegate
+            {
+                //Toast.MakeText(this.Activity, "Action selected: ",
+                //    ToastLength.Short).Show();
+                this.Activity.OnBackPressed();
+                activityToolbar.Visibility = ViewStates.Visible;
+            };
             // Set Collapsing Toolbar layout to the screen
             collapsingToolbar = (CollapsingToolbarLayout)rootView.FindViewById(Resource.Id.collapsing_toolbar);
            
@@ -79,6 +90,12 @@ namespace MovieSearching.Droid.Views
             SetMovieDetail(viewHolder, movieItem);
 
             return rootView;
+        }
+        protected void SetupToolbar(Toolbar toolbar)
+        {
+            ((AppCompatActivity)this.Activity).SetSupportActionBar(toolbar);
+            toolbar.SetNavigationIcon(Resource.Drawable.abc_ic_ab_back_material);
+
         }
         protected void SetMovieDetail(MovieViewHolder viewHolder, MovieModel movieItem)
         {

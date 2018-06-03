@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Support.V7.Widget;
 using Android.Support.V4.Widget;
+using MovieSearching.Droid.Utils;
 
 namespace MovieSearching.Droid.Views
 {
@@ -27,6 +28,9 @@ namespace MovieSearching.Droid.Views
         List<MovieModel> dataList;
         MovieModel movieModel;
 
+        bool wifiNetwork = false;
+        bool mobileNetwork = false;
+
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -37,7 +41,20 @@ namespace MovieSearching.Droid.Views
             movieAdapter = new MovieRecyclerViewAdapter(this.Context,dataList);
             
             var defaultTitle = "Russian";
-            LoadMovieData(defaultTitle);
+            // check network
+            wifiNetwork = Reachability.IsConnectedWifi(this.Context);
+            mobileNetwork = Reachability.IsConnectedMobile(this.Context);
+            if(wifiNetwork || mobileNetwork)
+            {
+                LoadMovieData(defaultTitle);
+            }
+            else
+            {
+                Toast.MakeText(this.Activity, "Please check your network ",
+                    ToastLength.Short).Show();
+            }
+
+
 
         }
 
@@ -88,7 +105,7 @@ namespace MovieSearching.Droid.Views
                 {
                     dataList.Clear();
                     movieAdapter.NotifyDataSetChanged();
-                    Toast.MakeText(this.Context, "No movies found", ToastLength.Short);
+                    CustomAlertDialog.ShowAlertDialog(this.Context, "No movies found please try again !");
                 }
             }else
             {
@@ -118,8 +135,9 @@ namespace MovieSearching.Droid.Views
                 {
                     dataList.Clear();
                     movieAdapter.NotifyDataSetChanged();
-                    Toast.MakeText(this.Context, "No movies found", ToastLength.Short);
-                }
+                Toast.MakeText(this.Activity, "No Movies Found",
+               ToastLength.Short).Show();
+            }
                    
            
         }

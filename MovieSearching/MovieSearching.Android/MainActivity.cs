@@ -36,7 +36,19 @@ namespace MovieSearching.Droid
             SupportActionBar.SetTitle(Resource.String.app_name);
             SupportActionBar.SetDisplayHomeAsUpEnabled(false);
         }
-	}
+        public override void OnBackPressed()
+        {
+            if (FragmentManager.BackStackEntryCount != 0)
+            {
+               
+                FragmentManager.PopBackStack();// fragmentManager.popBackStack();
+            }
+            else
+            {
+                base.OnBackPressed();
+            }
+        }
+    }
 }
 
 
