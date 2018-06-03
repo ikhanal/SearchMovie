@@ -3,9 +3,9 @@ This app is designed for finding movie which is built using native xamarin.andro
 </br>
 1. Android Screen shot
 </br>
-![Home Dashboard](https://github.com/ikhanal/SearchMovie/blob/master/Screenshots/Dashboard.png)
-</br>
-![Movie Detail](https://github.com/ikhanal/SearchMovie/blob/master/Screenshots/Movie%20Detail.png)
+[Home Dashboard](https://github.com/ikhanal/SearchMovie/blob/master/Screenshots/Dashboard.png) </br>
+
+</br>![Movie Detail](https://github.com/ikhanal/SearchMovie/blob/master/Screenshots/Movie%20Detail.png) </br>
 </br>
 ![Alert Dialog](https://github.com/ikhanal/SearchMovie/blob/master/Screenshots/alert%20dialog.png)
 </br>
