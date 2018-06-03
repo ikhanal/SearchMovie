@@ -12,17 +12,26 @@ namespace MovieSearching
     {
         public static async Task<dynamic> GetMovieDataFromRemote(string queryString)
         {
-            HttpClient client = new HttpClient();
-            var response = await client.GetAsync(queryString);
-
             dynamic data = null;
-            if (response != null)
+            try
             {
-                string json = response.Content.ReadAsStringAsync().Result;
-                data = JsonConvert.DeserializeObject(json);
+                HttpClient client = new HttpClient();
+               // HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, queryString);
+                var response = await client.GetAsync(queryString);
+
+
+                if (response != null)
+                {
+                    string json = response.Content.ReadAsStringAsync().Result;
+                    data = JsonConvert.DeserializeObject(json);
+                }
+
+                return data;
+            }catch(Exception ex)
+            {
+                return data;
             }
 
-            return data;
         }
     }
 }
